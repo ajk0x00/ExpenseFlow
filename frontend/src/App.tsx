@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import Layout from './components/Layout';
 import AccountList from './components/AccountList';
+import TransactionList from './components/TransactionList';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'accounts'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'accounts' | 'transactions'>('dashboard');
 
   return (
     <Layout activeTab={activeTab} onTabChange={setActiveTab}>
@@ -16,6 +17,7 @@ function App() {
         </div>
       )}
       {activeTab === 'accounts' && <AccountList />}
+      {activeTab === 'transactions' && <TransactionList />}
     </Layout>
   );
 }

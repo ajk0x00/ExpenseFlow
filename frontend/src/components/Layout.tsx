@@ -1,10 +1,10 @@
 import React from 'react';
-import { LayoutDashboard, Wallet, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Wallet, Menu, X, ArrowRightLeft } from 'lucide-react';
 
 interface LayoutProps {
     children: React.ReactNode;
-    activeTab: 'dashboard' | 'accounts';
-    onTabChange: (tab: 'dashboard' | 'accounts') => void;
+    activeTab: 'dashboard' | 'accounts' | 'transactions';
+    onTabChange: (tab: 'dashboard' | 'accounts' | 'transactions') => void;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange }) => {
@@ -32,8 +32,8 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange }) => 
                             setIsSidebarOpen(false);
                         }}
                         className={`flex items-center w-full p-3 rounded-lg transition-colors ${activeTab === 'dashboard'
-                                ? 'bg-blue-50 text-blue-600'
-                                : 'text-gray-600 hover:bg-gray-50'
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-600 hover:bg-gray-50'
                             }`}
                     >
                         <LayoutDashboard size={20} className="mr-3" />
@@ -45,12 +45,25 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange }) => 
                             setIsSidebarOpen(false);
                         }}
                         className={`flex items-center w-full p-3 rounded-lg transition-colors ${activeTab === 'accounts'
-                                ? 'bg-blue-50 text-blue-600'
-                                : 'text-gray-600 hover:bg-gray-50'
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-600 hover:bg-gray-50'
                             }`}
                     >
                         <Wallet size={20} className="mr-3" />
                         Accounts
+                    </button>
+                    <button
+                        onClick={() => {
+                            onTabChange('transactions');
+                            setIsSidebarOpen(false);
+                        }}
+                        className={`flex items-center w-full p-3 rounded-lg transition-colors ${activeTab === 'transactions'
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-600 hover:bg-gray-50'
+                            }`}
+                    >
+                        <ArrowRightLeft size={20} className="mr-3" />
+                        Transactions
                     </button>
                 </nav>
             </div>
