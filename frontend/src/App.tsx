@@ -1,30 +1,23 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState } from 'react';
+import Layout from './components/Layout';
+import AccountList from './components/AccountList';
 
 function App() {
-  const [message, setMessage] = useState('')
-
-  useEffect(() => {
-    axios.get('/api/v1/')
-      .then(response => {
-        setMessage(response.data.message)
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error)
-        setMessage('Error connecting to backend')
-      })
-  }, [])
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'accounts'>('dashboard');
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4 text-blue-600">FastAPI + React Boilerplate</h1>
-        <p className="text-gray-700">
-          Backend says: <span className="font-semibold">{message || 'Loading...'}</span>
-        </p>
-      </div>
-    </div>
-  )
+    <Layout activeTab={activeTab} onTabChange={setActiveTab}>
+      {activeTab === 'dashboard' && (
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold text-gray-800">Dashboard</h2>
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+            <p className="text-gray-600">Welcome to your Expense Tracker Dashboard!</p>
+          </div>
+        </div>
+      )}
+      {activeTab === 'accounts' && <AccountList />}
+    </Layout>
+  );
 }
 
-export default App
+export default App;
