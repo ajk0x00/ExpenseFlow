@@ -26,6 +26,26 @@ async def create(db: AsyncSession, obj_in: TransactionCreate) -> Transaction:
     await db.refresh(db_obj)
     return db_obj
 
+async def create_bulk(db: AsyncSession, objs_in: List[TransactionCreate]) -> List[Transaction]:
+    """Create multiple transactions in bulk"""
+    db_objs = [
+        Transaction(
+            account_id=obj_in.account_id,
+            date=obj_in.date,
+            narration=obj_in.narration,
+            withdrawal_amount=obj_in.withdrawal_amount,
+            deposit_amount=obj_in.deposit_amount,
+            metadata_=obj_in.metadata_,
+        )
+        for obj_in in objs_in
+    ]
+    db.add_all(db_objs)
+    await db.commit()
+    # Refresh all objects to get their IDs
+    for db_obj in db_objs:
+        await db.refresh(db_obj)
+    return db_objs
+
 async def update(db: AsyncSession, *, db_obj: Transaction, obj_in: TransactionUpdate) -> Transaction:
     update_data = obj_in.dict(exclude_unset=True)
     for field in update_data:
