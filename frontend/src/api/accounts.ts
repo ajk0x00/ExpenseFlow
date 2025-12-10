@@ -11,6 +11,9 @@ export interface BankAccount {
     metadata_?: Record<string, any>;
 }
 
+// Type alias for convenience
+export type Account = BankAccount;
+
 export interface BankAccountCreate {
     account_name: string;
     bank_name: string;

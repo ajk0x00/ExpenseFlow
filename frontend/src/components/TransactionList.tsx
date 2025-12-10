@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Edit2, Trash2, Upload } from 'lucide-react';
 import { getTransactions, createTransaction, updateTransaction, deleteTransaction } from '../api/transactions';
 import type { Transaction, TransactionCreate, TransactionUpdate } from '../api/transactions';
 import TransactionForm from './TransactionForm';
+import TransactionUpload from './TransactionUpload';
 import ConfirmationModal from './ConfirmationModal';
 
 const TransactionList: React.FC = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [isUploadOpen, setIsUploadOpen] = useState(false);
     const [editingTransaction, setEditingTransaction] = useState<Transaction | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -86,13 +88,22 @@ const TransactionList: React.FC = () => {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Transactions</h2>
-                <button
-                    onClick={openCreateForm}
-                    className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                    <Plus size={20} className="mr-2" />
-                    Add Transaction
-                </button>
+                <div className="flex space-x-3">
+                    <button
+                        onClick={() => setIsUploadOpen(true)}
+                        className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                        <Upload size={20} className="mr-2" />
+                        Upload Statement
+                    </button>
+                    <button
+                        onClick={openCreateForm}
+                        className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                        <Plus size={20} className="mr-2" />
+                        Add Transaction
+                    </button>
+                </div>
             </div>
 
             {isFormOpen && (
@@ -105,6 +116,20 @@ const TransactionList: React.FC = () => {
                             initialData={editingTransaction}
                             onSubmit={(data) => editingTransaction ? handleUpdate(data as TransactionUpdate) : handleCreate(data as TransactionCreate)}
                             onCancel={() => setIsFormOpen(false)}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {isUploadOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                        <TransactionUpload
+                            onSuccess={() => {
+                                setIsUploadOpen(false);
+                                fetchTransactions();
+                            }}
+                            onCancel={() => setIsUploadOpen(false)}
                         />
                     </div>
                 </div>
