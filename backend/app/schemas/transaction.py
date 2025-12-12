@@ -1,7 +1,8 @@
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from datetime import datetime
 from pydantic import BaseModel
 from decimal import Decimal
+from app.schemas.category import Category
 
 class TransactionBase(BaseModel):
     account_id: int
@@ -12,7 +13,7 @@ class TransactionBase(BaseModel):
     metadata_: Optional[Dict[str, Any]] = None
 
 class TransactionCreate(TransactionBase):
-    pass
+    category_ids: Optional[List[int]] = None  # If not provided, defaults to 'others' category
 
 class TransactionUpdate(TransactionBase):
     account_id: Optional[int] = None
@@ -20,6 +21,7 @@ class TransactionUpdate(TransactionBase):
     narration: Optional[str] = None
     withdrawal_amount: Optional[Decimal] = None
     deposit_amount: Optional[Decimal] = None
+    category_ids: Optional[List[int]] = None
 
 class TransactionInDBBase(TransactionBase):
     id: int
@@ -28,4 +30,4 @@ class TransactionInDBBase(TransactionBase):
         from_attributes = True
 
 class Transaction(TransactionInDBBase):
-    pass
+    categories: List["Category"] = []

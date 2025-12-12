@@ -13,3 +13,11 @@ class Transaction(Base):
     metadata_ = Column("metadata", JSON, nullable=True)
 
     account = relationship("BankAccount", backref="transactions")
+    
+    # Many-to-many relationship with Category
+    # The association table is defined in category.py module
+    categories = relationship(
+        "Category",
+        secondary="transaction_category",
+        back_populates="transactions"
+    )
