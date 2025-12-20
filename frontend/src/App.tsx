@@ -3,9 +3,10 @@ import Layout from './components/Layout';
 import AccountList from './components/AccountList';
 import TransactionList from './components/TransactionList';
 import StatementFormatList from './components/StatementFormatList';
+import CategoryList from './components/CategoryList';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'accounts' | 'transactions' | 'statement-formats'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'accounts' | 'transactions' | 'categories' | 'statement-formats'>('dashboard');
 
   return (
     <Layout activeTab={activeTab} onTabChange={setActiveTab}>
@@ -19,6 +20,7 @@ function App() {
       )}
       {activeTab === 'accounts' && <AccountList />}
       {activeTab === 'transactions' && <TransactionList />}
+      {activeTab === 'categories' && <CategoryList />}
       {activeTab === 'statement-formats' && <StatementFormatList />}
     </Layout>
   );

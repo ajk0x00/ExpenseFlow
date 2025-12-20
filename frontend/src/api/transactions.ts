@@ -1,6 +1,6 @@
 import axios from 'axios';
-
-const API_URL = 'http://localhost:8000/api/v1';
+import { API_URL } from './client';
+import type { Category } from './categories';
 
 export interface Transaction {
     id: number;
@@ -9,6 +9,7 @@ export interface Transaction {
     narration: string;
     withdrawal_amount: number;
     deposit_amount: number;
+    categories?: Category[];
     metadata_?: Record<string, any>;
 }
 
@@ -18,6 +19,7 @@ export interface TransactionCreate {
     narration: string;
     withdrawal_amount?: number;
     deposit_amount?: number;
+    category_ids?: number[];
     metadata_?: Record<string, any>;
 }
 
@@ -27,6 +29,7 @@ export interface TransactionUpdate {
     narration?: string;
     withdrawal_amount?: number;
     deposit_amount?: number;
+    category_ids?: number[];
     metadata_?: Record<string, any>;
 }
 

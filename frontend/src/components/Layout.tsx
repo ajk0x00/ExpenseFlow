@@ -1,10 +1,10 @@
 import React from 'react';
-import { LayoutDashboard, Wallet, Menu, X, ArrowRightLeft, FileSpreadsheet } from 'lucide-react';
+import { LayoutDashboard, Wallet, Menu, X, ArrowRightLeft, FileSpreadsheet, Tags } from 'lucide-react';
 
 interface LayoutProps {
     children: React.ReactNode;
-    activeTab: 'dashboard' | 'accounts' | 'transactions' | 'statement-formats';
-    onTabChange: (tab: 'dashboard' | 'accounts' | 'transactions' | 'statement-formats') => void;
+    activeTab: 'dashboard' | 'accounts' | 'transactions' | 'categories' | 'statement-formats';
+    onTabChange: (tab: 'dashboard' | 'accounts' | 'transactions' | 'categories' | 'statement-formats') => void;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange }) => {
@@ -64,6 +64,19 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange }) => 
                     >
                         <ArrowRightLeft size={20} className="mr-3" />
                         Transactions
+                    </button>
+                    <button
+                        onClick={() => {
+                            onTabChange('categories');
+                            setIsSidebarOpen(false);
+                        }}
+                        className={`flex items-center w-full p-3 rounded-lg transition-colors ${activeTab === 'categories'
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-600 hover:bg-gray-50'
+                            }`}
+                    >
+                        <Tags size={20} className="mr-3" />
+                        Categories
                     </button>
                     <button
                         onClick={() => {
