@@ -24,5 +24,18 @@ services:
     depends_on:
       - db
 
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    environment:
+      - POSTGRES_SERVER=db
+      - POSTGRES_PORT=5432
+    command: poetry run alembic upgrade head
+    depends_on:
+      - db
+
 volumes:
   postgres_data:

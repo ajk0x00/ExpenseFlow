@@ -39,7 +39,12 @@ The goal of this project is to provide a user-friendly interface for managing pe
    docker-compose up --build
    ```
 
-3. **Access the application**:
+3. **Run database migrations**:
+   ```bash
+   docker-compose run --rm migrate
+   ```
+
+4. **Access the application**:
    - Frontend: [http://localhost:5173](http://localhost:5173)
    - Backend API: [http://localhost:8000](http://localhost:8000)
    - API Documentation (Swagger UI): [http://localhost:8000/docs](http://localhost:8000/docs)
