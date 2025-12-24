@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { API_URL as BASE_URL } from './client';
 
-const API_URL = '/api/v1/accounts';
+const API_URL = `${BASE_URL}/accounts`;
 
 export interface BankAccount {
     id: number;
