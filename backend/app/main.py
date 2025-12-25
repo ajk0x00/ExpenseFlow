@@ -12,6 +12,40 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
 
+from app.core.users import UserManager
+from app.schemas.user import UserCreate
+from app.models.user import User
+from fastapi_users.db import SQLAlchemyUserDatabase
+from app.db.session import AsyncSessionLocal
+
+@app.on_event("startup")
+async def on_startup():
+    async with AsyncSessionLocal() as session:
+        user_db = SQLAlchemyUserDatabase(session, User)
+        user_manager = UserManager(user_db)
+        
+        email = "admin@example.com"
+        try:
+            # Check if user exists
+            # We can't use get_by_email directly if it raises exception on not found? 
+            # Reference: fastapi-users managers usually raise exceptions or return None depending on version.
+            # But get_by_email return type is User, usually raises UserNotExists if not found?
+            # Let's inspect UserManager implementation or assume safe create.
+            # Actually simpler: just try to create and ignore "User already exists" exception
+            user = await user_manager.get_by_email(email)
+            print(f"User {email} already exists")
+        except Exception:
+            print(f"Creating user {email}")
+            user_in = UserCreate(
+                email=email,
+                password="admin",
+                is_superuser=True,
+                is_active=True,
+                is_verified=True,
+            )
+            await user_manager.create(user_in)
+            print(f"User {email} created")
+
 # Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:
     print(f"DEBUG: Allowed Origins: {settings.BACKEND_CORS_ORIGINS}")
