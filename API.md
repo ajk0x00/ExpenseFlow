@@ -2,6 +2,55 @@
 
 This document provides detailed information about the API endpoints available in the Expense Tracker application. All endpoints are prefixed with `/api/v1`.
 
+## Authentication API
+Manage user authentication and registration.
+
+### `POST /auth/jwt/login`
+Login to obtain an access token.
+- **Body (form-data)**: `OAuth2PasswordRequestForm`
+  - `username`: Email address.
+  - `password`: User password.
+- **Response**: Access token.
+  ```json
+  {
+    "access_token": "eyJhbG...",
+    "token_type": "bearer"
+  }
+  ```
+
+### `POST /auth/jwt/logout`
+Logout the current user.
+- **Response**: Empty 204 response.
+
+### `POST /auth/register`
+Register a new user.
+- **Body**: `UserCreate` object.
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "strongpassword",
+    "is_active": true,
+    "is_superuser": false,
+    "is_verified": false
+  }
+  ```
+- **Response**: The created `User` object.
+
+### `GET /users/me`
+Get current authenticated user details.
+- **Response**: `UserRead` object.
+  ```json
+  {
+    "id": "uuid...",
+    "email": "user@example.com",
+    "is_active": true,
+    "is_superuser": false,
+    "is_verified": false
+  }
+  ```
+
+---
+
 ## Accounts API
 Manage bank accounts.
 
