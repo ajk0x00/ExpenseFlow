@@ -25,6 +25,8 @@ passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"
 httpx = "^0.26.0"
+aiosqlite = "^0.22.1"
+pytest-asyncio = "^1.3.0"
 
 [build-system]
 requires = ["poetry-core"]
